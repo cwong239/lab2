@@ -1,14 +1,15 @@
 from dataclasses import dataclass
+
+
 @dataclass
 class Node:
     value: int
     prev_node: None
     next_node: None
 
+
 @dataclass
 class doubly_Ordered_List:
-    '''A doubly-linked ordered list of items, from lowest (head of list) to highest (tail of
-list)'''
     head: 'Node' = None
     tail: 'Node' = None
 
@@ -28,7 +29,18 @@ list)'''
         in the list)
         returns True. If item was not removed (was not in the list) returns False
         MUST have O(n) average-case performance'''
-        pass
+        if self.is_empty():
+            return False
+        current_node = self.head
+        while current_node is not None:
+            if current_node.value == item:
+                current_node.prev_node.next_node = current_node.next_node
+                current_node.next_node.prev_node = current_node.prev_node
+                current_node.next_node = None
+                current_node.prev_node = None
+                return True
+            current_node = current_node.next_node
+        return False
     def index(self, item):
         '''Returns index of the first occurrence of an item in OrderedList (assuming head of
         list is index 0).
