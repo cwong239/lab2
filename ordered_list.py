@@ -22,7 +22,31 @@ list)'''
         from lowest (at head of list) to highest (at tail of list) and returns True.
         If the item is already in the list, do not add it again and return False.
         MUST have O(n) average-case performance'''
-        pass
+        new_node = Node(item, None, None)
+        if self.head is None:
+            self.head = new_node
+            self.tail = new_node
+        else:
+            if item < self.head.value:
+                self.head.prev_node = new_node
+                new_node.next_node = self.head
+            elif item > self.tail.value:
+                self.tail.next_node = new_node
+                new_node.prev_node = self.tail
+            else:
+                current_node = self.head
+                while item > current_node.value:
+                    if item < current_node.next_node.value:
+                        new_node.prev_node = current_node
+                        new_node.next_node = current_node.next_node
+                        current_node.next_node.prev_node = new_node
+                        current_node.next_node = new_node
+                        break
+                    elif item == current_node.value:
+                        return False
+                    else:
+                        current_node = current_node.next_node
+                        
     def remove(self, item):
                 if self.is_empty():
             return False
@@ -51,6 +75,7 @@ list)'''
                 return True
             current_node = current_node.next_node
         return False
+    
     def index(self, item):
         '''Returns index of the first occurrence of an item in OrderedList (assuming head of
         list is index 0).
@@ -75,6 +100,7 @@ list)'''
         temp = current_node
         self.remove(current_node)
         return temp
+        
     def search(self, item):
         '''Searches OrderedList for item, returns True if item is in list, False otherwise"
         To practice recursion, this method must call a RECURSIVE method that
@@ -122,4 +148,12 @@ list)'''
         To practice recursion, this method must call a RECURSIVE method that
         will count and return the number of items in the list
         MUST have O(n) performance'''
-        pass
+        current_node = self.head
+        return self.size_recursive(current_node)
+
+    def size_recursive(self, current_node):
+        if current_node == self.tail:
+            return 1
+        else:
+            current_node = current_node.next_node
+            return 1 + self.size_recursive(current_node)
