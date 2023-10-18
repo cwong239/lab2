@@ -34,7 +34,16 @@ list)'''
         list is index 0).
         If item is not in list, return None
         MUST have O(n) average-case performance'''
-        pass
+        current_node = self.head
+        index = 0
+        while current_node is not None:
+            if current_node.value == item:
+                return index
+            else:
+                index = index + 1
+                current_node = current_node.next_node
+        return None
+        
     def pop(self, index):
         '''Removes and returns item at index (assuming head of list is index 0).
         If index is negative or >= size of list, raises IndexError
@@ -45,12 +54,30 @@ list)'''
         To practice recursion, this method must call a RECURSIVE method that
         will search the list
         MUST have O(n) average-case performance'''
-        pass
+        current_node = self.head
+        self.search_recurve(item, current_node)
+
+    def search_recurve(self, item, next_node):
+        if next_node.next_node is None:
+            return False
+
+        if next_node.value == item:
+            return True
+        else:
+            next_node = next_node.next_node
+            self.search_recurve(item, next_node)
+    
     def python_list(self):
         '''Return a Python list representation of OrderedList, from head to tail
         For example, list with integers 1, 2, and 3 would return [1, 2, 3]
         MUST have O(n) performance'''
-        pass
+        current_node = self.head
+        list = []
+        while current_node is not None:
+            list.append(current_node.value)
+            current_node = current_node.next_node
+        return list
+        
     def python_list_reversed(self):
         '''Return a Python list representation of OrderedList, from tail to head, using
         recursion
