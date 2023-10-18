@@ -25,15 +25,26 @@ class doubly_Ordered_List:
         MUST have O(n) average-case performance'''
         pass
     def remove(self, item):
-        '''Removes the first occurrence of an item from OrderedList. If item is removed (was
-        in the list)
-        returns True. If item was not removed (was not in the list) returns False
-        MUST have O(n) average-case performance'''
         if self.is_empty():
             return False
         current_node = self.head
+        if self.head.value == item:
+            if self.head.next_node is not None:
+                self.head = current_node.next_node
+                current_node.next_node = None
+                current_node.prev_node = None
+                return True
+            self.head.prev_node = None
+            self.head.next_node = None
+            return True
         while current_node is not None:
             if current_node.value == item:
+                if current_node == self.tail:
+                    current_node.prev_node.next_node = None
+                    self.tail = current_node.prev_node
+                    current_node.next_node = None
+                    current_node.prev_node = None
+                    return True
                 current_node.prev_node.next_node = current_node.next_node
                 current_node.next_node.prev_node = current_node.prev_node
                 current_node.next_node = None
@@ -48,10 +59,14 @@ class doubly_Ordered_List:
         MUST have O(n) average-case performance'''
         pass
     def pop(self, index):
-        '''Removes and returns item at index (assuming head of list is index 0).
-        If index is negative or >= size of list, raises IndexError
-        MUST have O(n) average-case performance'''
-        pass
+        if index<0:
+            return "Error"
+        current_node = self.head
+        for i in range(0, index):
+            current_node = current_node.next_node
+        temp = current_node
+        self.remove(current_node)
+        return temp
     def search(self, item):
         '''Searches OrderedList for item, returns True if item is in list, False otherwise"
         To practice recursion, this method must call a RECURSIVE method that
@@ -63,14 +78,20 @@ class doubly_Ordered_List:
         For example, list with integers 1, 2, and 3 would return [1, 2, 3]
         MUST have O(n) performance'''
         pass
+
+    def python_list_reversed_recursive(self, my_list, current_node):
+        if current_node is None:
+            return my_list, current_node
+        else:
+            my_list.append(current_node.value)
+            current_node=current_node.prev_node
+            return my_list, current_node
+
     def python_list_reversed(self):
-        '''Return a Python list representation of OrderedList, from tail to head, using
-        recursion
-        For example, list with integers 1, 2, and 3 would return [3, 2, 1]
-        To practice recursion, this method must call a RECURSIVE method that
-        will return a reversed list
-        MUST have O(n) performance'''
-        pass
+        my_list = []
+        python_list_reversed_recursive(my_list, self.tail)
+        return my_list
+
     def size(self):
         '''Returns number of items in the OrderedList
         To practice recursion, this method must call a RECURSIVE method that
